@@ -574,38 +574,51 @@ class Custom_Tshirt_Product {
         if (isset($cart_item['custom_tshirt_data'])) {
             $custom_data = $cart_item['custom_tshirt_data'];
             
-            // Recupera il nome del tipo dalla configurazione
-            $type_id = $custom_data['custom_tshirt_type'];
-            $type_name = $type_id; // Valore predefinito
+            // Usa i metodi helper per ottenere i valori
+            $type_id = $this->get_type_value($custom_data);
+            $color = $this->get_color_value($custom_data);
+            $size = $this->get_size_value($custom_data);
+            
+            // Valore predefinito per il nome del tipo
+            $type_name = $type_id;
             $product_id = $cart_item['product_id'];
             
             // Cerca il nome nei tipi personalizzati
-            $tshirt_types = get_post_meta($product_id, '_custom_tshirt_types', true);
-            $tshirt_types = !empty($tshirt_types) ? json_decode($tshirt_types, true) : array();
-            
-            if (!empty($tshirt_types)) {
-                foreach ($tshirt_types as $type) {
-                    if (isset($type['id']) && $type['id'] === $type_id) {
-                        $type_name = $type['name'];
-                        break;
+            if (!empty($type_id)) {
+                $tshirt_types = get_post_meta($product_id, '_custom_tshirt_types', true);
+                $tshirt_types = !empty($tshirt_types) ? json_decode($tshirt_types, true) : array();
+                
+                if (!empty($tshirt_types)) {
+                    foreach ($tshirt_types as $type) {
+                        if (isset($type['id']) && $type['id'] === $type_id) {
+                            $type_name = $type['name'];
+                            break;
+                        }
                     }
                 }
             }
             
-            $item_data[] = array(
-                'key'   => __('Tipo', 'custom-tshirt-designer'),
-                'value' => $type_name
-            );
+            // Aggiungi i dati solo se sono disponibili
+            if (!empty($type_name)) {
+                $item_data[] = array(
+                    'key'   => __('Tipo', 'custom-tshirt-designer'),
+                    'value' => $type_name
+                );
+            }
             
-            $item_data[] = array(
-                'key'   => __('Colore', 'custom-tshirt-designer'),
-                'value' => $custom_data['custom_tshirt_color']
-            );
+            if (!empty($color)) {
+                $item_data[] = array(
+                    'key'   => __('Colore', 'custom-tshirt-designer'),
+                    'value' => $color
+                );
+            }
             
-            $item_data[] = array(
-                'key'   => __('Taglia', 'custom-tshirt-designer'),
-                'value' => $custom_data['custom_tshirt_size']
-            );
+            if (!empty($size)) {
+                $item_data[] = array(
+                    'key'   => __('Taglia', 'custom-tshirt-designer'),
+                    'value' => $size
+                );
+            }
         }
         
         return $item_data;
