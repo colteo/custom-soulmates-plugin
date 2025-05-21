@@ -1,0 +1,158 @@
+/* Stili per le schede prodotto */
+#custom_tshirt_product_data h3 {
+    margin: 1em 0;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #0073aa;
+}
+
+#custom_tshirt_product_data .options_group {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Stili per la gestione ordini */
+.order-tshirt-count {
+    display: inline-block;
+    padding: 0.2em 0.6em;
+    font-size: 0.8em;
+    line-height: 1;
+    color: #fff;
+    background-color: #2271b1;
+    border-radius: 999px;
+    font-weight: bold;
+}
+
+/* Stili per la visualizzazione immagini negli ordini */
+.custom-tshirt-images-container .custom-tshirt-image-box {
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.custom-tshirt-images-container .custom-tshirt-image-box:hover {
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Stili per il selettore di prodotti */
+.woocommerce_options_panel label[for="_custom_tshirt_visual_colors"] {
+    margin-left: 0 !important;
+}
+
+.woocommerce_options_panel ._custom_tshirt_basic_price_field,
+.woocommerce_options_panel ._custom_tshirt_deluxe_price_field {
+    padding: 5px 20px 5px 162px !important;
+}
+
+/* Stili per i tag di colori e taglie */
+.color-tags-container,
+.size-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 5px;
+    min-height: 30px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.color-tag,
+.size-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: #f0f8ff;
+    border: 1px solid #add8e6;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.remove-tag {
+    margin-left: 6px;
+    color: #999;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.remove-tag:hover {
+    color: #f44336;
+}
+
+.color-input-container,
+.size-input-container {
+    margin-bottom: 5px;
+}
+
+.color-input-container input,
+.size-input-container input {
+    width: 100%;
+    padding: 8px;
+}
+
+/* Stili per i tipi di magliette */
+.tshirt-types-container {
+    margin-bottom: 20px;
+}
+
+.tshirt-type-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.tshirt-type-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.tshirt-type-title {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.tshirt-type-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.tshirt-type-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.add-tshirt-type-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background-color: #f7f7f7;
+    border: 1px dashed #999;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.add-tshirt-type-button:hover {
+    background-color: #f0f0f0;
+    border-color: #666;
+}
+
+.tshirt-type-thumbnail {
+    max-width: 100px;
+    max-height: 100px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 3px;
+}

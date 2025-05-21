@@ -1,0 +1,201 @@
+.custom-tshirt-designer {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.custom-tshirt-designer h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.custom-tshirt-instructions {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f0f7ff;
+    border-left: 4px solid #007cba;
+    border-radius: 3px;
+}
+
+.custom-tshirt-upload-area {
+    margin-bottom: 20px;
+}
+
+.custom-tshirt-upload-area label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.custom-tshirt-upload-area .description {
+    font-size: 0.85em;
+    color: #777;
+    margin-top: 5px;
+}
+
+#image_preview {
+    margin-top: 15px;
+}
+
+#image_preview img {
+    max-width: 150px;
+    height: auto;
+    border: 1px solid #ddd;
+    padding: 5px;
+    background: #fff;
+}
+
+/* Stili per le varianti */
+#custom_tshirt_variants_container {
+    margin-bottom: 20px;
+}
+
+.custom-tshirt-variant {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    border-left: 4px solid #007cba;
+}
+
+.custom-tshirt-variant:not(:last-child) {
+    margin-bottom: 15px;
+}
+
+.variant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.variant-header h4 {
+    margin: 0;
+    color: #007cba;
+    font-size: 16px;
+}
+
+.variant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.variant-options>div {
+    flex: 1;
+    min-width: 150px;
+}
+
+.variant-options label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.variant-options select,
+.variant-options input {
+    width: 100%;
+    padding: 8px;
+}
+
+.remove-variant {
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.remove-variant:hover {
+    background-color: #f44336;
+    color: white;
+    border-color: #f44336;
+}
+
+/* Stili per i selettori di colore */
+.color-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.color-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+
+.color-option.selected {
+    border-color: #007cba;
+    background-color: rgba(0, 124, 186, 0.1);
+}
+
+.color-swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+}
+
+.color-name {
+    font-size: 0.8em;
+    text-align: center;
+}
+
+/* Stili per i pulsanti delle azioni */
+.custom-tshirt-actions {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+#add_another_variant {
+    background-color: #f7f7f7;
+    color: #555;
+}
+
+#add_another_variant:hover {
+    background-color: #e6e6e6;
+}
+
+/* Stili per la guida alle taglie */
+.size-guide-section {
+    margin-top: 20px;
+}
+
+.toggle-size-guide {
+    display: inline-block;
+    color: #007cba;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+.toggle-size-guide:hover {
+    text-decoration: underline;
+}
+
+.size-guide-content {
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 3px;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+/* Stili per la variante principale */
+.main-variant {
+    background-color: #f0f7ff;
+}
+
+.main-variant .variant-header h4 {
+    color: #0073aa;
+}
