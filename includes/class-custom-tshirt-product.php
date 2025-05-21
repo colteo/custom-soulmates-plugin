@@ -628,10 +628,11 @@ class Custom_Tshirt_Product {
      * Helper: Ottieni valore tipo standardizzato
      */
     private function get_type_value($data) {
-        if (isset($data['type'])) {
-            return $data['type'];
-        } elseif (isset($data['custom_tshirt_type'])) {
+        if (isset($data['custom_tshirt_type'])) {
             return $data['custom_tshirt_type'];
+        } elseif (isset($data['type'])) {
+            // Compatibilità con il vecchio formato
+            return $data['type'];
         }
         return '';
     }
@@ -640,10 +641,11 @@ class Custom_Tshirt_Product {
      * Helper: Ottieni valore colore standardizzato
      */
     private function get_color_value($data) {
-        if (isset($data['color'])) {
-            return $data['color'];
-        } elseif (isset($data['custom_tshirt_color'])) {
+        if (isset($data['custom_tshirt_color'])) {
             return $data['custom_tshirt_color'];
+        } elseif (isset($data['color'])) {
+            // Compatibilità con il vecchio formato
+            return $data['color'];
         }
         return '';
     }
@@ -652,10 +654,11 @@ class Custom_Tshirt_Product {
      * Helper: Ottieni valore taglia standardizzato
      */
     private function get_size_value($data) {
-        if (isset($data['size'])) {
-            return $data['size'];
-        } elseif (isset($data['custom_tshirt_size'])) {
+        if (isset($data['custom_tshirt_size'])) {
             return $data['custom_tshirt_size'];
+        } elseif (isset($data['size'])) {
+            // Compatibilità con il vecchio formato
+            return $data['size'];
         }
         return '';
     }
@@ -664,10 +667,11 @@ class Custom_Tshirt_Product {
      * Helper: Ottieni percorso immagine standardizzato
      */
     private function get_image_path_value($data) {
-        if (isset($data['image_path'])) {
-            return $data['image_path'];
-        } elseif (isset($data['custom_tshirt_image_path'])) {
+        if (isset($data['custom_tshirt_image_path'])) {
             return $data['custom_tshirt_image_path'];
+        } elseif (isset($data['image_path'])) {
+            // Compatibilità con il vecchio formato
+            return $data['image_path'];
         }
         return '';
     }
