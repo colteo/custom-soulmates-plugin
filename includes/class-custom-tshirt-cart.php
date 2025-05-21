@@ -26,6 +26,54 @@ class Custom_Tshirt_Cart {
     }
     
     /**
+     * Helper: Ottieni valore tipo standardizzato
+     */
+    private function get_type_value($data) {
+        if (isset($data['type'])) {
+            return $data['type'];
+        } elseif (isset($data['custom_tshirt_type'])) {
+            return $data['custom_tshirt_type'];
+        }
+        return '';
+    }
+    
+    /**
+     * Helper: Ottieni valore colore standardizzato
+     */
+    private function get_color_value($data) {
+        if (isset($data['color'])) {
+            return $data['color'];
+        } elseif (isset($data['custom_tshirt_color'])) {
+            return $data['custom_tshirt_color'];
+        }
+        return '';
+    }
+    
+    /**
+     * Helper: Ottieni valore taglia standardizzato
+     */
+    private function get_size_value($data) {
+        if (isset($data['size'])) {
+            return $data['size'];
+        } elseif (isset($data['custom_tshirt_size'])) {
+            return $data['custom_tshirt_size'];
+        }
+        return '';
+    }
+    
+    /**
+     * Helper: Ottieni percorso immagine standardizzato
+     */
+    private function get_image_path_value($data) {
+        if (isset($data['image_path'])) {
+            return $data['image_path'];
+        } elseif (isset($data['custom_tshirt_image_path'])) {
+            return $data['custom_tshirt_image_path'];
+        }
+        return '';
+    }
+    
+    /**
      * Validazione durante l'aggiunta al carrello
      */
     public function validate_add_to_cart($passed, $product_id, $quantity) {
@@ -56,6 +104,7 @@ class Custom_Tshirt_Cart {
         
         // Raccogli tutti i dati personalizzati
         if (isset($_POST['custom_tshirt_image_path'], $_POST['custom_tshirt_type'], $_POST['custom_tshirt_color'], $_POST['custom_tshirt_size'])) {
+            // Standardizziamo usando sempre il formato "key" senza prefisso
             $cart_item_data['custom_tshirt_data'] = array(
                 'image_path' => sanitize_text_field($_POST['custom_tshirt_image_path']),
                 'type' => sanitize_text_field($_POST['custom_tshirt_type']),
@@ -82,7 +131,10 @@ class Custom_Tshirt_Cart {
             $product = $cart_item['data'];
             $product_id = $product->get_id();
             
-            if ('basic' === $cart_item['custom_tshirt_data']['type']) {
+            // Usa il metodo helper per ottenere il tipo
+            $type = $this->get_type_value($cart_item['custom_tshirt_data']);
+            
+            if ('basic' === $type) {
                 $price = get_post_meta($product_id, '_custom_tshirt_basic_price', true);
             } else {
                 $price = get_post_meta($product_id, '_custom_tshirt_deluxe_price', true);
@@ -100,33 +152,34 @@ class Custom_Tshirt_Cart {
      * Mostra dati personalizzati nel carrello
      */
     public function get_item_data($item_data, $cart_item) {
-        // Debug: Aggiungi questo per vedere cosa c'è nel cart_item
-        error_log('Cart Item: ' . print_r($cart_item, true));
-        
         if (isset($cart_item['custom_tshirt_data'])) {
-            $data = $cart_item['custom_tshirt_data'];
-            error_log('Custom T-Shirt Data: ' . print_r($data, true));
+            $custom_data = $cart_item['custom_tshirt_data'];
+            
+            // Usa i metodi helper per ottenere i valori
+            $type = $this->get_type_value($custom_data);
+            $color = $this->get_color_value($custom_data);
+            $size = $this->get_size_value($custom_data);
             
             // Forza l'aggiunta direttamente al $item_data, bypassando qualsiasi logica standard
             $item_data[] = array(
                 'key'     => __('Tipo', 'custom-tshirt-designer'),
-                'value'   => isset($data['type']) ? ucfirst($data['type']) : 'N/A',
+                'value'   => !empty($type) ? ucfirst($type) : 'N/A',
                 'display' => '<strong>'.__('Tipo', 'custom-tshirt-designer').':</strong> ' . 
-                            (isset($data['type']) ? ucfirst($data['type']) : 'N/A')
+                            (!empty($type) ? ucfirst($type) : 'N/A')
             );
             
             $item_data[] = array(
                 'key'     => __('Colore', 'custom-tshirt-designer'),
-                'value'   => isset($data['color']) ? $data['color'] : 'N/A',
+                'value'   => !empty($color) ? $color : 'N/A',
                 'display' => '<strong>'.__('Colore', 'custom-tshirt-designer').':</strong> ' . 
-                            (isset($data['color']) ? $data['color'] : 'N/A')
+                            (!empty($color) ? $color : 'N/A')
             );
             
             $item_data[] = array(
                 'key'     => __('Taglia', 'custom-tshirt-designer'),
-                'value'   => isset($data['size']) ? $data['size'] : 'N/A',
+                'value'   => !empty($size) ? $size : 'N/A',
                 'display' => '<strong>'.__('Taglia', 'custom-tshirt-designer').':</strong> ' . 
-                            (isset($data['size']) ? $data['size'] : 'N/A')
+                            (!empty($size) ? $size : 'N/A')
             );
         }
         
@@ -140,22 +193,28 @@ class Custom_Tshirt_Cart {
         if (isset($values['custom_tshirt_data'])) {
             $data = $values['custom_tshirt_data'];
             
+            // Usa i metodi helper per ottenere i valori
+            $type = $this->get_type_value($data);
+            $color = $this->get_color_value($data);
+            $size = $this->get_size_value($data);
+            $image_path = $this->get_image_path_value($data);
+            
             // Aggiungi i metadati usando il formato appropriato
-            if (isset($data['type'])) {
-                $item->add_meta_data(__('Tipo', 'custom-tshirt-designer'), ucfirst($data['type']));
+            if (!empty($type)) {
+                $item->add_meta_data(__('Tipo', 'custom-tshirt-designer'), ucfirst($type));
             }
             
-            if (isset($data['color'])) {
-                $item->add_meta_data(__('Colore', 'custom-tshirt-designer'), $data['color']);
+            if (!empty($color)) {
+                $item->add_meta_data(__('Colore', 'custom-tshirt-designer'), $color);
             }
             
-            if (isset($data['size'])) {
-                $item->add_meta_data(__('Taglia', 'custom-tshirt-designer'), $data['size']);
+            if (!empty($size)) {
+                $item->add_meta_data(__('Taglia', 'custom-tshirt-designer'), $size);
             }
             
             // Salva il percorso dell'immagine
-            if (isset($data['image_path'])) {
-                $item->add_meta_data('_custom_tshirt_image_path', $data['image_path'], true);
+            if (!empty($image_path)) {
+                $item->add_meta_data('_custom_tshirt_image_path', $image_path, true);
             }
         }
     }
@@ -174,18 +233,14 @@ class Custom_Tshirt_Cart {
         $variants = $_POST['variants'];
         
         foreach ($variants as $variant) {
+            // Standardizziamo usando il formato "key" senza prefisso
             $cart_item_data = array(
                 'custom_tshirt_data' => array(
-                    'type' => sanitize_text_field($variant['type']),      // Usa 'type' invece di 'custom_tshirt_type'
-                    'color' => sanitize_text_field($variant['color']),    // Usa 'color' invece di 'custom_tshirt_color'
-                    'size' => sanitize_text_field($variant['size']),      // Usa 'size' invece di 'custom_tshirt_size'
-                    'image_path' => sanitize_text_field($variant['image_path'])
-                ),
-                'unique_key' => md5(json_encode(array(
                     'type' => sanitize_text_field($variant['type']),
                     'color' => sanitize_text_field($variant['color']),
-                    'size' => sanitize_text_field($variant['size'])
-                )))
+                    'size' => sanitize_text_field($variant['size']),
+                    'image_path' => sanitize_text_field($variant['image_path'])
+                )
             );
             
             // Crea ID univoco
@@ -257,6 +312,7 @@ class Custom_Tshirt_Cart {
         
         // Aggiungi tutte le varianti al carrello
         foreach ($variants as $variant) {
+            // Standardizziamo usando il formato "key" senza prefisso
             $cart_item_data = array(
                 'custom_tshirt_data' => array(
                     'image_path' => sanitize_text_field($variant['image_path']),

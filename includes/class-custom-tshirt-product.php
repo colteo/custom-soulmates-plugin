@@ -544,10 +544,10 @@ class Custom_Tshirt_Product {
         
         // Crea un ID univoco per questa combinazione
         $custom_data = array(
-            'custom_tshirt_image_path' => isset($_POST['custom_tshirt_image_path']) ? sanitize_text_field($_POST['custom_tshirt_image_path']) : '',
-            'custom_tshirt_type' => isset($_POST['custom_tshirt_type']) ? sanitize_text_field($_POST['custom_tshirt_type']) : '',
-            'custom_tshirt_color' => isset($_POST['custom_tshirt_color']) ? sanitize_text_field($_POST['custom_tshirt_color']) : '',
-            'custom_tshirt_size' => isset($_POST['custom_tshirt_size']) ? sanitize_text_field($_POST['custom_tshirt_size']) : '',
+            'image_path' => isset($_POST['custom_tshirt_image_path']) ? sanitize_text_field($_POST['custom_tshirt_image_path']) : '',
+            'type' => isset($_POST['custom_tshirt_type']) ? sanitize_text_field($_POST['custom_tshirt_type']) : '',
+            'color' => isset($_POST['custom_tshirt_color']) ? sanitize_text_field($_POST['custom_tshirt_color']) : '',
+            'size' => isset($_POST['custom_tshirt_size']) ? sanitize_text_field($_POST['custom_tshirt_size']) : '',
         );
         
         // Crea un ID univoco basato sui dati personalizzati per permettere più varianti nel carrello
@@ -603,6 +603,54 @@ class Custom_Tshirt_Product {
     }
     
     /**
+     * Helper: Ottieni valore tipo standardizzato
+     */
+    private function get_type_value($data) {
+        if (isset($data['type'])) {
+            return $data['type'];
+        } elseif (isset($data['custom_tshirt_type'])) {
+            return $data['custom_tshirt_type'];
+        }
+        return '';
+    }
+
+    /**
+     * Helper: Ottieni valore colore standardizzato
+     */
+    private function get_color_value($data) {
+        if (isset($data['color'])) {
+            return $data['color'];
+        } elseif (isset($data['custom_tshirt_color'])) {
+            return $data['custom_tshirt_color'];
+        }
+        return '';
+    }
+
+    /**
+     * Helper: Ottieni valore taglia standardizzato
+     */
+    private function get_size_value($data) {
+        if (isset($data['size'])) {
+            return $data['size'];
+        } elseif (isset($data['custom_tshirt_size'])) {
+            return $data['custom_tshirt_size'];
+        }
+        return '';
+    }
+
+    /**
+     * Helper: Ottieni percorso immagine standardizzato
+     */
+    private function get_image_path_value($data) {
+        if (isset($data['image_path'])) {
+            return $data['image_path'];
+        } elseif (isset($data['custom_tshirt_image_path'])) {
+            return $data['custom_tshirt_image_path'];
+        }
+        return '';
+    }
+
+    /**
      * Calcolo prezzi in base al tipo
      */
     public function custom_tshirt_price_calculation($cart) {
@@ -615,7 +663,8 @@ class Custom_Tshirt_Product {
                 $product_id = $cart_item['product_id'];
                 $product = wc_get_product($product_id);
                 
-                $type_id = $cart_item['custom_tshirt_data']['custom_tshirt_type'];
+                // Usa il metodo helper per ottenere il tipo
+                $type_id = $this->get_type_value($cart_item['custom_tshirt_data']);
                 
                 // Cerca il prezzo nei tipi personalizzati
                 $tshirt_types = get_post_meta($product_id, '_custom_tshirt_types', true);
@@ -648,7 +697,7 @@ class Custom_Tshirt_Product {
             }
         }
     }
-    
+
     /**
      * Aggiungi metadati all'ordine
      */
@@ -657,8 +706,12 @@ class Custom_Tshirt_Product {
             $custom_data = $values['custom_tshirt_data'];
             $product_id = $item->get_product_id();
             
-            // Recupera il nome del tipo dalla configurazione
-            $type_id = $custom_data['custom_tshirt_type'];
+            // Usa i metodi helper per ottenere i valori
+            $type_id = $this->get_type_value($custom_data);
+            $color = $this->get_color_value($custom_data);
+            $size = $this->get_size_value($custom_data);
+            $image_path = $this->get_image_path_value($custom_data);
+            
             $type_name = $type_id; // Valore predefinito
             
             // Cerca il nome nei tipi personalizzati
@@ -675,9 +728,9 @@ class Custom_Tshirt_Product {
             }
             
             $item->add_meta_data(__('Tipo', 'custom-tshirt-designer'), $type_name);
-            $item->add_meta_data(__('Colore', 'custom-tshirt-designer'), $custom_data['custom_tshirt_color']);
-            $item->add_meta_data(__('Taglia', 'custom-tshirt-designer'), $custom_data['custom_tshirt_size']);
-            $item->add_meta_data('_custom_tshirt_image_path', $custom_data['custom_tshirt_image_path'], true);
+            $item->add_meta_data(__('Colore', 'custom-tshirt-designer'), $color);
+            $item->add_meta_data(__('Taglia', 'custom-tshirt-designer'), $size);
+            $item->add_meta_data('_custom_tshirt_image_path', $image_path, true);
         }
     }
 }
