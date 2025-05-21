@@ -155,31 +155,32 @@ class Custom_Tshirt_Cart {
         if (isset($cart_item['custom_tshirt_data'])) {
             $custom_data = $cart_item['custom_tshirt_data'];
             
+            // Debug per vedere la struttura esatta dei dati
+            error_log('Dati carrello: ' . print_r($custom_data, true));
+            
             // Usa i metodi helper per ottenere i valori
             $type = $this->get_type_value($custom_data);
             $color = $this->get_color_value($custom_data);
             $size = $this->get_size_value($custom_data);
             
-            // Forza l'aggiunta direttamente al $item_data, bypassando qualsiasi logica standard
+            // Modifica per evitare le etichette duplicate e formattare correttamente
             $item_data[] = array(
                 'key'     => __('Tipo', 'custom-tshirt-designer'),
                 'value'   => !empty($type) ? ucfirst($type) : 'N/A',
-                'display' => '<strong>'.__('Tipo', 'custom-tshirt-designer').':</strong> ' . 
-                            (!empty($type) ? ucfirst($type) : 'N/A')
+                // Rimuovi il tag <strong> e l'etichetta duplicata dal display
+                'display' => '' // Usa il display predefinito di WooCommerce
             );
             
             $item_data[] = array(
                 'key'     => __('Colore', 'custom-tshirt-designer'),
                 'value'   => !empty($color) ? $color : 'N/A',
-                'display' => '<strong>'.__('Colore', 'custom-tshirt-designer').':</strong> ' . 
-                            (!empty($color) ? $color : 'N/A')
+                'display' => ''
             );
             
             $item_data[] = array(
                 'key'     => __('Taglia', 'custom-tshirt-designer'),
                 'value'   => !empty($size) ? $size : 'N/A',
-                'display' => '<strong>'.__('Taglia', 'custom-tshirt-designer').':</strong> ' . 
-                            (!empty($size) ? $size : 'N/A')
+                'display' => ''
             );
         }
         

@@ -542,18 +542,27 @@ class Custom_Tshirt_Product {
             return $cart_item_data;
         }
         
-        // Crea un ID univoco per questa combinazione
-        $custom_data = array(
-            'image_path' => isset($_POST['custom_tshirt_image_path']) ? sanitize_text_field($_POST['custom_tshirt_image_path']) : '',
-            'type' => isset($_POST['custom_tshirt_type']) ? sanitize_text_field($_POST['custom_tshirt_type']) : '',
-            'color' => isset($_POST['custom_tshirt_color']) ? sanitize_text_field($_POST['custom_tshirt_color']) : '',
-            'size' => isset($_POST['custom_tshirt_size']) ? sanitize_text_field($_POST['custom_tshirt_size']) : '',
-        );
+        // Debug per verificare i dati in ingresso
+        error_log('POST data: ' . print_r($_POST, true));
         
-        // Crea un ID univoco basato sui dati personalizzati per permettere più varianti nel carrello
-        $unique_key = md5(json_encode($custom_data));
-        $cart_item_data['custom_tshirt_unique_key'] = $unique_key;
-        $cart_item_data['custom_tshirt_data'] = $custom_data;
+        // Verifica se i dati sono presenti
+        if (isset($_POST['custom_tshirt_type'], $_POST['custom_tshirt_color'], $_POST['custom_tshirt_size'], $_POST['custom_tshirt_image_path'])) {
+            // Standardizziamo usando il formato "key" senza prefisso
+            $cart_item_data['custom_tshirt_data'] = array(
+                'image_path' => sanitize_text_field($_POST['custom_tshirt_image_path']),
+                'type' => sanitize_text_field($_POST['custom_tshirt_type']),
+                'color' => sanitize_text_field($_POST['custom_tshirt_color']),
+                'size' => sanitize_text_field($_POST['custom_tshirt_size'])
+            );
+            
+            // Debug per verificare i dati che vengono salvati
+            error_log('Dati salvati nel carrello: ' . print_r($cart_item_data['custom_tshirt_data'], true));
+            
+            // Crea un ID univoco basato sui dati personalizzati
+            $cart_item_data['unique_key'] = md5(json_encode($cart_item_data['custom_tshirt_data']));
+        } else {
+            error_log('Dati personalizzati mancanti nella richiesta POST');
+        }
         
         return $cart_item_data;
     }
